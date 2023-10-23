@@ -5,36 +5,48 @@ import {
   unstable_createMemoryUploadHandler,
   unstable_parseMultipartFormData,
 } from "@remix-run/cloudflare";
-
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} from "unique-names-generator";
 export async function action({ request, context }: ActionFunctionArgs) {
   const env = context.env as Env;
-
+  let NEW_FILENAME = "";
   const uploadHandler = unstable_composeUploadHandlers(
     async ({ name, contentType, data, filename }) => {
+      // grab file extension
       if (!filename) {
         return undefined;
       }
-      console.log("Are we even?", {
-        name,
-        filename,
-        contentType,
-      });
-      const dataArray1 = [];
+      const ext = filename.split(".").pop();
+      if (!ext) {
+        return undefined;
+      }
+      NEW_FILENAME = uniqueNamesGenerator({
+        dictionaries: [adjectives, colors, animals],
+      }); // big_red_donkey
 
+      NEW_FILENAME = NEW_FILENAME + "." + ext;
+      const dataArray1 = [];
       for await (const x of data) {
         dataArray1.push(x);
       }
-      const uploadRes = await env.r2_mmflder_bucket.put(
-        filename,
-        new File(dataArray1, filename, {
-          type: contentType,
-        })
-      );
-      console.log("upload res>>> ", { uploadResIThink: uploadRes?.uploaded });
-
+      await env.r2_mmflder_bucket
+        .put(
+          filename,
+          new File(dataArray1, filename, {
+            type: contentType,
+          })
+        )
+        .catch((err) => {
+          console.log("MY DAWG THE CATCH", err);
+        });
+      return env.R2_PUBLIC_URL + NEW_FILENAME;
       // parse everything else into memory
-      unstable_createMemoryUploadHandler();
-    }
+    },
+    unstable_createMemoryUploadHandler()
   );
 
   const formData = await unstable_parseMultipartFormData(
@@ -42,13 +54,13 @@ export async function action({ request, context }: ActionFunctionArgs) {
     uploadHandler
   );
 
-  console.log("form data res>>> ");
-  for (let [key, value] of formData.entries()) {
-    console.log("another key");
-    console.log(key, value);
+  for (const pair of formData.entries()) {
+    console.log(`LOOK HERE: ${pair[0]}, ${pair[1]}`);
   }
 
-  return new Response(`Put something`);
+  const publicUrl = env.R2_PUBLIC_URL + NEW_FILENAME;
+
+  return new Response(`Put something: ${publicUrl}`);
 }
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
