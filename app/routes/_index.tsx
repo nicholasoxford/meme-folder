@@ -38,9 +38,25 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
     data: { session },
   } = await supabase.auth.getSession();
 
+  if (!session) {
+    return json(
+      {
+        session,
+      },
+      {
+        headers: response.headers,
+      }
+    );
+  }
+  const assets = await supabase
+    .from("assets")
+    .select("*")
+    .eq("user_id", session?.user?.id);
+
   return json(
     {
       session,
+      assets,
     },
     {
       headers: response.headers,
@@ -76,7 +92,6 @@ export default function Index() {
   );
 }
 export async function action({ request, context }: ActionFunctionArgs) {
-  console.log("WE IN IT BABY");
   const response = new Response();
   let env = context.env as Env;
   const supabase = createServerClient<Database>(
@@ -88,7 +103,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
   const email = String(formData.get("email"));
   const password = String(formData.get("password"));
-  console.log("EMAIL", email);
 
   const errors = {} as any;
   if (!email.includes("@")) {
@@ -103,11 +117,10 @@ export async function action({ request, context }: ActionFunctionArgs) {
     console.log("Entering errors", errors);
     return json({ errors });
   }
-  const res = await supabase.auth.signInWithPassword({
+  await supabase.auth.signInWithPassword({
     email,
     password,
   });
-  console.log("SIGN IN RES", res.data);
   // Redirect to dashboard if validation is successful
   return json(
     {
