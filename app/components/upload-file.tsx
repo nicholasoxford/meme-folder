@@ -6,8 +6,11 @@
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { useFetcher } from "@remix-run/react";
+import { Button } from "./ui/button";
 
 export default function Upload() {
+  const fetcher = useFetcher();
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer>("");
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -36,13 +39,39 @@ export default function Upload() {
     e.preventDefault();
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // You can handle form submission here, e.g., sending the image to a server
+
+    const formData = new FormData();
+
+    // @ts-ignore
+    formData.append("picture", imageSrc);
+
+    // Create a fetch request to send the form data
+    try {
+      const response = await fetch("/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        // Handle a successful response, e.g., redirect or show a success message
+        console.log("Form submitted successfully.");
+        // Add your desired logic here, such as navigation or displaying a success message.
+      } else {
+        // Handle an unsuccessful response, e.g., show an error message
+        console.error("Form submission failed.");
+        // Add your desired error handling logic here.
+      }
+    } catch (error) {
+      // Handle any network errors, e.g., connection issues
+      console.error("Network error:", error);
+      // Add your desired error handling logic here.
+    }
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <fetcher.Form action="/upload" method="post" onSubmit={handleFormSubmit}>
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -72,9 +101,19 @@ export default function Upload() {
             <div className="text-zinc-500 dark:text-zinc-400">or</div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="picture">Picture</Label>
-              <Input onChange={handleInputChange} id="picture" type="file" />
+              <Input
+                onChange={handleInputChange}
+                id="picture"
+                type="file"
+                name="picture"
+              />
             </div>
-            <input className="hidden " id="picture" type="file" />
+            <input
+              className="hidden "
+              id="pictureDrop"
+              type="file"
+              name="pictureDrop"
+            />
             {imageSrc && (
               <div className="mt-10">
                 <img
@@ -87,8 +126,15 @@ export default function Upload() {
               </div>
             )}
           </div>
+          <Button
+            type="submit"
+            className="w-2/3 mt-10 bg-green-500 text-white py-2 rounded-lg"
+          >
+            {" "}
+            Submit
+          </Button>
         </div>
       </div>
-    </form>
+    </fetcher.Form>
   );
 }

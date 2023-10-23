@@ -6,12 +6,12 @@ import {
 } from "@remix-run/cloudflare";
 import { useLoaderData, useOutletContext } from "@remix-run/react";
 import {
-  SupabaseClient,
   createServerClient,
+  type SupabaseClient,
 } from "@supabase/auth-helpers-remix";
 import Login from "~/components/login";
 import { Button } from "~/components/ui/button";
-import Upload from "~/components/upload";
+import Upload from "~/components/upload-file";
 
 export const meta: MetaFunction = () => {
   return [
