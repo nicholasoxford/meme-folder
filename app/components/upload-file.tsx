@@ -8,7 +8,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useFetcher } from "@remix-run/react";
 import { Button } from "./ui/button";
-
+import { Loader2 } from "lucide-react";
 export default function Upload() {
   const fetcher = useFetcher();
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer>("");
@@ -38,7 +38,8 @@ export default function Upload() {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
-
+  const isSubmitting = fetcher.state !== "idle";
+  console.log("fetcher state", fetcher.state);
   return (
     <fetcher.Form action="/upload" method="post" encType="multipart/form-data">
       <div
@@ -95,13 +96,23 @@ export default function Upload() {
               </div>
             )}
           </div>
-          <Button
-            type="submit"
-            className="w-2/3 mt-10 bg-green-500 text-white py-2 rounded-lg"
-          >
-            {" "}
-            Submit
-          </Button>
+          {!isSubmitting ? (
+            <Button
+              type="submit"
+              className="w-2/3 mt-10 bg-green-500 text-white py-2 rounded-lg"
+            >
+              {" "}
+              Submit
+            </Button>
+          ) : (
+            <Button
+              disabled
+              className="w-2/3 mt-10 bg-gray-500 text-white py-2 rounded-lg"
+            >
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
+            </Button>
+          )}
         </div>
       </div>
     </fetcher.Form>
