@@ -83,7 +83,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   // create a public url from key
   const PUBLIC_URL = env.R2_PUBLIC_URL + NEW_FILENAME;
 
-  supabase.from("assets").insert({
+  await supabase.from("assets").insert({
     userId: user.id,
     R2_KEY: NEW_FILENAME,
     PUBLIC_URL,
