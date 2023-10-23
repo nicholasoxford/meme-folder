@@ -10,6 +10,7 @@ import {
   type SupabaseClient,
 } from "@supabase/auth-helpers-remix";
 import type { Database } from "types/supabase";
+import ImageGrid from "~/components/image-grid";
 import Login from "~/components/login";
 import { Button } from "~/components/ui/button";
 import Upload from "~/components/upload-file";
@@ -42,13 +43,14 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
     return json(
       {
         session,
+        assets: null,
       },
       {
         headers: response.headers,
       }
     );
   }
-  const assets = await supabase
+  const sbRes = await supabase
     .from("assets")
     .select("*")
     .eq("user_id", session?.user?.id);
@@ -56,7 +58,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   return json(
     {
       session,
-      assets,
+      assets: sbRes.data,
     },
     {
       headers: response.headers,
@@ -65,7 +67,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 };
 
 export default function Index() {
-  const { session } = useLoaderData<typeof loader>();
+  const { session, assets } = useLoaderData<typeof loader>();
   const { supabase } = useOutletContext<{ supabase: SupabaseClient }>();
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -83,6 +85,7 @@ export default function Index() {
       {session && (
         <div>
           <Upload />
+          {!!assets && <ImageGrid assets={assets} />}
           <Button className="w-64" onClick={handleLogout}>
             Logout
           </Button>
