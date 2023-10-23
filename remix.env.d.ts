@@ -22,4 +22,5 @@ interface Env {
   NODE_ENV: string;
   r2_mmflder_bucket: R2Bucket;
   R2_PUBLIC_URL: string;
+  SUPABASE_SERVICE_KEY: string;
 }
