@@ -1,4 +1,4 @@
-import { json, type ActionFunctionArgs } from "@remix-run/cloudflare";
+import { json, type ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { createServerClient } from "@supabase/auth-helpers-remix";
 import type { Database } from "types/supabase";
 import Login from "~/components/login";
@@ -46,10 +46,9 @@ export async function action({ request, context }: ActionFunctionArgs) {
   });
   console.log("res", res.data);
   // Redirect to dashboard if validation is successful
-  return json(
-    {
-      status: "success",
-    },
+  return redirect(
+    "/email-confirm?email=" + email,
+
     {
       headers: response.headers,
     }

@@ -18,8 +18,11 @@ import Upload from "~/components/upload-file";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "MMFLDR" },
+    {
+      name: "description",
+      content: "The easiest way to store your favorite meme images",
+    },
   ];
 };
 
