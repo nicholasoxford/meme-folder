@@ -9,7 +9,7 @@ import { Label } from "./ui/label";
 
 export default function Upload() {
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer>("");
-  const handleDrop = (e) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
@@ -32,11 +32,11 @@ export default function Upload() {
     }
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // You can handle form submission here, e.g., sending the image to a server
   };
