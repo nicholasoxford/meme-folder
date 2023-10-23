@@ -8,19 +8,29 @@ import {
 
 export async function action({ request, context }: ActionFunctionArgs) {
   const env = context.env as Env;
-  console.log("bruh", await request.clone().formData());
 
   const uploadHandler = unstable_composeUploadHandlers(
     async ({ name, contentType, data, filename }) => {
-      if (name !== "img") {
+      if (!filename) {
         return undefined;
       }
-      let filename2 = filename ?? "blah";
-      for await (const d of data) {
-        console.log(d);
-        const uploadRes = await env.r2_mmflder_bucket.put(filename2, d);
-        console.log("WTF RN", uploadRes);
+      console.log("Are we even?", {
+        name,
+        filename,
+        contentType,
+      });
+      const dataArray1 = [];
+
+      for await (const x of data) {
+        dataArray1.push(x);
       }
+      const uploadRes = await env.r2_mmflder_bucket.put(
+        filename,
+        new File(dataArray1, filename, {
+          type: contentType,
+        })
+      );
+      console.log("upload res>>> ", { uploadResIThink: uploadRes?.uploaded });
 
       // parse everything else into memory
       unstable_createMemoryUploadHandler();
@@ -32,9 +42,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
     uploadHandler
   );
 
-  console.log("form data res>>> ", {
-    formData,
-  });
+  console.log("form data res>>> ");
+  for (let [key, value] of formData.entries()) {
+    console.log("another key");
+    console.log(key, value);
+  }
 
   return new Response(`Put something`);
 }
