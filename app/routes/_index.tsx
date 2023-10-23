@@ -53,7 +53,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const sbRes = await supabase
     .from("assets")
     .select("*")
-    .eq("user_id", session?.user?.id);
+    .eq("userId", session?.user?.id);
 
   return json(
     {
