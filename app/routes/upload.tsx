@@ -65,8 +65,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
       }
 
       await env.r2_mmflder_bucket.put(
-        filename,
-        new File(dataArray1, filename, {
+        NEW_FILENAME,
+        new File(dataArray1, NEW_FILENAME, {
           type: contentType,
         })
       );
