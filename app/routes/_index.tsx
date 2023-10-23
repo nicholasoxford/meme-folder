@@ -9,6 +9,7 @@ import {
   createServerClient,
   type SupabaseClient,
 } from "@supabase/auth-helpers-remix";
+import { createClient } from "@supabase/supabase-js";
 import type { Database } from "types/supabase";
 import ImageGrid from "~/components/image-grid";
 import Login from "~/components/login";
@@ -50,11 +51,21 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
       }
     );
   }
-  const sbRes = await supabase
+  const supaFetch = createClient<Database>(
+    env.SUPABASE_URL,
+    env.SUPABASE_SERVICE_KEY,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    }
+  );
+  const sbRes = await supaFetch
     .from("assets")
     .select("*")
-    .eq("userId", session?.user?.id);
-
+    .eq("userId", session.user.id);
+  console.log("sbRes", sbRes);
   return json(
     {
       session,
@@ -84,7 +95,7 @@ export default function Index() {
       {!session && <Login />}
       {session && (
         <div>
-          <Upload />
+          <Upload hasUploaded={!!assets} />
           {!!assets && <ImageGrid assets={assets} />}
           <Button className="w-64" onClick={handleLogout}>
             Logout
