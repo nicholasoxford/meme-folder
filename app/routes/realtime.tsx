@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 
 import { json, type LoaderFunctionArgs } from "@remix-run/server-runtime";
 import type { SupabaseClient } from "@supabase/auth-helpers-remix";
+import { Database } from "types/supabase";
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const response = new Response();
   const env = context.env as Env;
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     env.SUPABASE_URL!,
     env.SUPABASE_ANON_KEY!,
     {

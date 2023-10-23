@@ -9,6 +9,7 @@ import {
   createServerClient,
   type SupabaseClient,
 } from "@supabase/auth-helpers-remix";
+import type { Database } from "types/supabase";
 import Login from "~/components/login";
 import { Button } from "~/components/ui/button";
 import Upload from "~/components/upload-file";
@@ -24,7 +25,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   let env = context.env as Env;
 
   const response = new Response();
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     env.SUPABASE_URL!,
     env.SUPABASE_ANON_KEY!,
     {
@@ -78,7 +79,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   console.log("WE IN IT BABY");
   const response = new Response();
   let env = context.env as Env;
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     env.SUPABASE_URL!,
     env.SUPABASE_ANON_KEY!,
     { request, response }

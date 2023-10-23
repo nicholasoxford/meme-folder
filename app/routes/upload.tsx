@@ -4,6 +4,8 @@ import {
   unstable_createMemoryUploadHandler,
   unstable_parseMultipartFormData,
 } from "@remix-run/cloudflare";
+import { createServerClient } from "@supabase/auth-helpers-remix";
+import { Database } from "types/supabase";
 import {
   uniqueNamesGenerator,
   adjectives,
@@ -15,6 +17,23 @@ import {
 export async function action({ request, context }: ActionFunctionArgs) {
   // grab server side env variables from context
   const env = context.env as Env;
+
+  const response = new Response();
+  const supabase = createServerClient<Database>(
+    env.SUPABASE_URL!,
+    env.SUPABASE_ANON_KEY!,
+    { request, response }
+  );
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const user = session.user;
 
   // create a new filename
   // TODO: If they pass in a filename, use that instead
@@ -62,7 +81,13 @@ export async function action({ request, context }: ActionFunctionArgs) {
   await unstable_parseMultipartFormData(request, uploadHandler);
 
   // create a public url from key
-  const publicUrl = env.R2_PUBLIC_URL + NEW_FILENAME;
+  const PUBLIC_URL = env.R2_PUBLIC_URL + NEW_FILENAME;
 
-  return new Response(`Put something: ${publicUrl}`);
+  supabase.from("assets").insert({
+    userId: user.id,
+    R2_KEY: NEW_FILENAME,
+    PUBLIC_URL,
+  });
+
+  return new Response(`Put something: ${PUBLIC_URL}`);
 }

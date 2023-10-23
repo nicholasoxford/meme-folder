@@ -8,6 +8,7 @@
     "dev": "remix dev --manual -c \"npm run start\"",
     "start": "wrangler pages dev --compatibility-date=2023-10-16 ./public --r2=r2_mmflder_bucket",
     "typecheck": "tsc",
+    "generate:types": "bunx supabase gen types typescript --project-id \"hofqjlvkztgcktmkgkxf\" --schema public > types/supabase.ts",
     "pages:deploy": "bun run build && wrangler pages deploy ./public"
   },
   "dependencies": {
