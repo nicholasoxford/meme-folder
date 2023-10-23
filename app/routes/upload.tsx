@@ -83,7 +83,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   // create a public url from key
   const PUBLIC_URL = env.R2_PUBLIC_URL + NEW_FILENAME;
-  console.log("About to insert");
   const supabaseInsert = createClient<Database>(
     env.SUPABASE_URL,
     env.SUPABASE_SERVICE_KEY,
@@ -94,12 +93,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
       },
     }
   );
-  const res2 = await supabaseInsert.from("assets").insert({
+  await supabaseInsert.from("assets").insert({
     userId: user.id,
     R2_KEY: NEW_FILENAME,
     PUBLIC_URL,
   });
-  console.log("res2: ", res2.error);
 
   return new Response(`Put something: ${PUBLIC_URL}`);
 }

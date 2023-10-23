@@ -14,7 +14,6 @@ export default function SignUp() {
 }
 
 export async function action({ request, context }: ActionFunctionArgs) {
-  console.log("hitting sign up");
   const response = new Response();
   let env = context.env as Env;
   const supabase = createServerClient<Database>(
@@ -37,14 +36,12 @@ export async function action({ request, context }: ActionFunctionArgs) {
   }
 
   if (Object.keys(errors).length > 0) {
-    console.log("Entering errors", errors);
     return json({ errors });
   }
-  const res = await supabase.auth.signUp({
+  await supabase.auth.signUp({
     email,
     password,
   });
-  console.log("res", res.data);
   // Redirect to dashboard if validation is successful
   return redirect(
     "/email-confirm?email=" + email,

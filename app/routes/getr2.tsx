@@ -7,10 +7,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   const items = await bucket.list();
 
-  for (const t of items.objects) {
-    console.log(t.key);
-  }
-
   return {
     status: 200,
     headers: {

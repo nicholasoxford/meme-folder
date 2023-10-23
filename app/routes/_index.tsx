@@ -68,7 +68,6 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
     .from("assets")
     .select("*")
     .eq("userId", session.user.id);
-  console.log("sbRes", sbRes);
   return json(
     {
       session,
@@ -131,7 +130,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
   }
 
   if (Object.keys(errors).length > 0) {
-    console.log("Entering errors", errors);
     return json({ errors });
   }
   await supabase.auth.signInWithPassword({
