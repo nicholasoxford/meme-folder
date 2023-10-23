@@ -8,6 +8,8 @@ export default {
   serverMainFields: ["browser", "module", "main"],
   serverMinify: true,
   serverModuleFormat: "esm",
+  tailwind: true,
+  postcss: true,
   serverPlatform: "neutral",
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
