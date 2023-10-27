@@ -81,6 +81,7 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
             </div>
             <input
               className="hidden "
+              onChange={handleInputChange}
               id="pictureDrop"
               type="file"
               name="pictureDrop"

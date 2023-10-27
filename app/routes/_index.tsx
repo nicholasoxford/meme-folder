@@ -91,7 +91,7 @@ export default function Index() {
       className="flex text-center justify-center flex-col  min-h-screen w-full"
     >
       <div>
-        <h1>Welcome to MMFLDR</h1>
+        <h1 className="mb-2">Welcome to MMFLDR</h1>
       </div>
 
       {!session && <Login />}
@@ -104,6 +104,7 @@ export default function Index() {
           </Button>
         </div>
       )}
+      <h1 className="mt-2">Never lose a meme again!</h1>
     </div>
   );
 }

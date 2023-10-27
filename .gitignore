@@ -8,6 +8,6 @@ node_modules
 /public/build
 .dev.vars
 /.wrangler
-bun.lockb
+.bun.lockb
 .dev.vars
 
