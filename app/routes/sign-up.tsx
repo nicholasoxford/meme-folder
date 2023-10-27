@@ -5,10 +5,17 @@ import Login from "~/components/login";
 
 export default function SignUp() {
   return (
-    <div className="min-h-screen w-full flex justify-center align-middle items-center ">
-      <div className="max-w-lg">
-        <Login isSignUp={true} />
+    <div
+      style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}
+      className="flex text-center justify-center flex-col  min-h-screen w-full"
+    >
+      <div>
+        <h1 className="mb-2">Welcome to MMFLDR</h1>
       </div>
+
+      <Login isSignUp={true} />
+
+      <h1 className="mt-2">Never lose a meme again!</h1>
     </div>
   );
 }
