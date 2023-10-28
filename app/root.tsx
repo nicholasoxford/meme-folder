@@ -21,6 +21,7 @@ import {
 import { useEffect, useState } from "react";
 import styles from "./tailwind.css";
 import { Database } from "types/supabase";
+import { SiteHeader } from "./components/site-header";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
@@ -60,6 +61,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <SiteHeader />
         <Outlet context={{ supabase }} />
         <ScrollRestoration />
         <Scripts />
