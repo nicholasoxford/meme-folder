@@ -79,7 +79,6 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 
 export default function Index() {
   const { session, assets } = useLoaderData<typeof loader>();
-  const data = useActionData<typeof action>();
 
   return (
     <div
@@ -90,12 +89,13 @@ export default function Index() {
         <h1 className="mb-2">Welcome to MMFLDR</h1>
       </div>
 
-      {!session && <Login error={data?.error ?? undefined} />}
-      {session && (
+      {session ? (
         <div>
           <Upload hasUploaded={!!assets} />
           {!!assets && <ImageGrid assets={assets} />}
         </div>
+      ) : (
+        <Login />
       )}
       <h1 className="mt-2">Never lose a meme again!</h1>
     </div>

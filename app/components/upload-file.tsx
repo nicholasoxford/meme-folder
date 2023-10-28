@@ -18,8 +18,8 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
   if (data && inputRef.current && hiddenInputRef.current) {
     inputRef.current.value = "";
     hiddenInputRef.current.value = "";
+    setImageSrc("");
   }
-  console.log("data data here:", { data });
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];

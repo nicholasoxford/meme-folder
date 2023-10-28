@@ -1,4 +1,4 @@
-import { Form, Link } from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -9,14 +9,10 @@ import {
 } from "./ui/card";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { action } from "~/routes/_index";
 
-export default function Login({
-  isSignUp,
-  error,
-}: {
-  isSignUp?: boolean;
-  error?: string;
-}) {
+export default function Login({ isSignUp }: { isSignUp?: boolean }) {
+  const data = useActionData<typeof action>();
   return (
     <>
       <Card className="border-2 border-dashed w-80 h-96 border-gray-500 p-4 rounded-lg shadow-md bg-white dark:bg-gray-800 max-w-lg mx-auto">
@@ -49,8 +45,10 @@ export default function Login({
             >
               {isSignUp ? "Sign Up" : "Login"}
             </Button>
-            {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
+            {data?.error && (
+              <div className="text-red-500 text-sm text-center">
+                {data.error}
+              </div>
             )}
           </Form>
         </CardContent>
