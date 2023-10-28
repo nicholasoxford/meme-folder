@@ -14,10 +14,10 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
   const fetcher = useFetcher();
   const data = fetcher.data;
-  if (data && inputRef.current && hiddenInputRef.current) {
-    inputRef.current.value = "";
-    hiddenInputRef.current.value = "";
-  }
+  // if (data && inputRef.current && hiddenInputRef.current) {
+  //   inputRef.current.value = "";
+  //   hiddenInputRef.current.value = "";
+  // }
   console.log("data data here:", { data });
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer>("");
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
