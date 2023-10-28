@@ -20,7 +20,7 @@ import {
 } from "@supabase/auth-helpers-remix";
 import { useEffect, useState } from "react";
 import styles from "./tailwind.css";
-import { Database } from "types/supabase";
+import type { Database } from "types/supabase";
 import { SiteHeader } from "./components/site-header";
 
 export const links: LinksFunction = () => [
@@ -73,7 +73,7 @@ export default function App() {
           </>
         )}
 
-        <SiteHeader />
+        <SiteHeader supabase={supabase} />
         <Outlet context={{ supabase }} />
         <ScrollRestoration />
         <Scripts />

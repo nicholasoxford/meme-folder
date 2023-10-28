@@ -4,20 +4,12 @@ import {
   type MetaFunction,
   type LoaderFunctionArgs,
 } from "@remix-run/cloudflare";
-import {
-  useActionData,
-  useLoaderData,
-  useOutletContext,
-} from "@remix-run/react";
-import {
-  createServerClient,
-  type SupabaseClient,
-} from "@supabase/auth-helpers-remix";
+import { useActionData, useLoaderData } from "@remix-run/react";
+import { createServerClient } from "@supabase/auth-helpers-remix";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "types/supabase";
 import ImageGrid from "~/components/image-grid";
 import Login from "~/components/login";
-import { Button } from "~/components/ui/button";
 import Upload from "~/components/upload-file";
 
 export const meta: MetaFunction = () => {
@@ -87,10 +79,6 @@ export default function Index() {
   const { session, assets } = useLoaderData<typeof loader>();
   const data = useActionData<typeof action>();
 
-  const { supabase } = useOutletContext<{ supabase: SupabaseClient }>();
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-  };
   return (
     <div
       style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}
@@ -105,9 +93,6 @@ export default function Index() {
         <div>
           <Upload hasUploaded={!!assets} />
           {!!assets && <ImageGrid assets={assets} />}
-          <Button className="w-64" onClick={handleLogout}>
-            Logout
-          </Button>
         </div>
       )}
       <h1 className="mt-2">Never lose a meme again!</h1>
