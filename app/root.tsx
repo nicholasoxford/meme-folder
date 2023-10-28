@@ -52,6 +52,8 @@ export default function App() {
       subscription.unsubscribe();
     };
   }, [serverAccessToken, supabase, revalidate]);
+  const NODE_ENV = process.env.NODE_ENV ?? "";
+  console.log({ NODE_ENV });
   return (
     <html lang="en">
       <head>
@@ -61,6 +63,16 @@ export default function App() {
         <Links />
       </head>
       <body>
+        {process.env.NODE_ENV === "development" ? null : (
+          <>
+            <script
+              defer
+              src="https://static.cloudflareinsights.com/beacon.min.js"
+              data-cf-beacon='{"token": "be2e24330ae744bdb4342e1f8beacf4b"}'
+            ></script>
+          </>
+        )}
+
         <SiteHeader />
         <Outlet context={{ supabase }} />
         <ScrollRestoration />
