@@ -13,6 +13,8 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
   const fetcher = useFetcher();
+  const data = fetcher.data;
+  console.log("data data here:", { data });
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer>("");
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
