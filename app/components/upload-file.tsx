@@ -12,14 +12,15 @@ import { Loader2 } from "lucide-react";
 export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
+  const [imageSrc, setImageSrc] = useState<string | ArrayBuffer>("");
   const fetcher = useFetcher();
   const data = fetcher.data;
-  // if (data && inputRef.current && hiddenInputRef.current) {
-  //   inputRef.current.value = "";
-  //   hiddenInputRef.current.value = "";
-  // }
+  if (data && inputRef.current && hiddenInputRef.current) {
+    inputRef.current.value = "";
+    hiddenInputRef.current.value = "";
+    setImageSrc("");
+  }
   console.log("data data here:", { data });
-  const [imageSrc, setImageSrc] = useState<string | ArrayBuffer>("");
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
