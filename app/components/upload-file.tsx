@@ -3,13 +3,15 @@
  * @see https://v0.dev/t/0pQC0AZkkMz
  */
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useFetcher } from "@remix-run/react";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const hiddenInputRef = useRef<HTMLInputElement | null>(null);
   const fetcher = useFetcher();
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer>("");
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -22,6 +24,10 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
       };
       reader.readAsDataURL(file);
     }
+    //@ts-ignore
+    inputRef.current.value = "";
+    //@ts-ignore
+    inputRef.current.files = e.dataTransfer.files;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +38,12 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
         setImageSrc(e.target?.result ?? "");
       };
       reader.readAsDataURL(file);
+      console.log({
+        input: inputRef.current,
+        hidden: hiddenInputRef.current,
+      });
+      // @ts-ignore
+      inputRef.current.files = e.target.files;
     }
   };
 
@@ -73,6 +85,7 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="picture">Picture</Label>
               <Input
+                ref={inputRef}
                 onChange={handleInputChange}
                 id="picture"
                 type="file"
@@ -80,12 +93,30 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
               />
             </div>
             <input
+              ref={hiddenInputRef}
               className="hidden "
               onChange={handleInputChange}
               id="pictureDrop"
               type="file"
               name="pictureDrop"
             />
+            {!isSubmitting ? (
+              <Button
+                type="submit"
+                className="w-2/3 mt-10 bg-green-500 text-white py-2 rounded-lg"
+              >
+                {" "}
+                Submit
+              </Button>
+            ) : (
+              <Button
+                disabled
+                className="w-2/3 mt-10 bg-gray-500 text-white py-2 rounded-lg"
+              >
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </Button>
+            )}
             {imageSrc && (
               <div className="mt-10">
                 <img
@@ -98,23 +129,6 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
               </div>
             )}
           </div>
-          {!isSubmitting ? (
-            <Button
-              type="submit"
-              className="w-2/3 mt-10 bg-green-500 text-white py-2 rounded-lg"
-            >
-              {" "}
-              Submit
-            </Button>
-          ) : (
-            <Button
-              disabled
-              className="w-2/3 mt-10 bg-gray-500 text-white py-2 rounded-lg"
-            >
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Please wait
-            </Button>
-          )}
         </div>
       </div>
     </fetcher.Form>

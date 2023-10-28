@@ -14,7 +14,6 @@ import {
   type SupabaseClient,
 } from "@supabase/auth-helpers-remix";
 import { createClient } from "@supabase/supabase-js";
-import { useState } from "react";
 import type { Database } from "types/supabase";
 import ImageGrid from "~/components/image-grid";
 import Login from "~/components/login";
