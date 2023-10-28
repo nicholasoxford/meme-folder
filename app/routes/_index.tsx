@@ -4,12 +4,17 @@ import {
   type MetaFunction,
   type LoaderFunctionArgs,
 } from "@remix-run/cloudflare";
-import { useLoaderData, useOutletContext } from "@remix-run/react";
+import {
+  useActionData,
+  useLoaderData,
+  useOutletContext,
+} from "@remix-run/react";
 import {
   createServerClient,
   type SupabaseClient,
 } from "@supabase/auth-helpers-remix";
 import { createClient } from "@supabase/supabase-js";
+import { useState } from "react";
 import type { Database } from "types/supabase";
 import ImageGrid from "~/components/image-grid";
 import Login from "~/components/login";
@@ -81,6 +86,8 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 
 export default function Index() {
   const { session, assets } = useLoaderData<typeof loader>();
+  const data = useActionData<typeof action>();
+
   const { supabase } = useOutletContext<{ supabase: SupabaseClient }>();
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -94,7 +101,7 @@ export default function Index() {
         <h1 className="mb-2">Welcome to MMFLDR</h1>
       </div>
 
-      {!session && <Login />}
+      {!session && <Login error={data?.error ?? undefined} />}
       {session && (
         <div>
           <Upload hasUploaded={!!assets} />
@@ -121,26 +128,46 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const email = String(formData.get("email"));
   const password = String(formData.get("password"));
 
-  const errors = {} as any;
   if (!email.includes("@")) {
-    errors.email = "Invalid email address";
+    return json({
+      error: "invalid email address",
+      success: false,
+    });
   }
 
   if (password.length < 8) {
-    errors.password = "Password should be at least 8 characters";
+    return json({
+      error: "Password should be at least 8 characters",
+      success: false,
+    });
   }
 
-  if (Object.keys(errors).length > 0) {
-    return json({ errors });
-  }
-  await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
+  if (error) {
+    console.log({
+      error_message: error.message,
+      error_name: error.name,
+      error_status: error.status,
+    });
+
+    return json(
+      {
+        error: error.message,
+        success: false,
+      },
+      {
+        headers: response.headers,
+      }
+    );
+  }
   // Redirect to dashboard if validation is successful
   return json(
     {
-      status: "success",
+      error: null,
+      success: true,
     },
     {
       headers: response.headers,
