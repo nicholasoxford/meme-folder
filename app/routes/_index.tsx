@@ -63,7 +63,9 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const sbRes = await supaFetch
     .from("assets")
     .select("*")
+    .order("created_at", { ascending: false })
     .eq("userId", session.user.id);
+
   return json(
     {
       session,
