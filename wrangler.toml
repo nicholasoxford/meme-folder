@@ -6,6 +6,3 @@ database_id = "5344a9ae-f5c3-4021-a99d-fe9e6c92adbd" # wrangler d1 info YOUR_DAT
 preview_database_id = "DB" # Required for Pages local development
 migrations_dir = "d1/migrations"
 
-[[r2_buckets]]
-binding = 'r2_mmflder_bucket' # <~ valid JavaScript variable name
-bucket_name = 'mmfldr-bucket'
