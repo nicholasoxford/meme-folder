@@ -7,6 +7,7 @@
 - [`Bun`](https://bun.sh/docs)
 - [Remix](https://remix.run/docs)
 - CDN: [Cloudflare R2](https://developers.cloudflare.com/r2/)
+- UI: [Shadcn and Tailwind](https://shadcn.com/)
 - Database: [Cloudflare D1](https://developers.cloudflare.com/d1/)
 - Authentication: [Supabase](https://supabase.io/)
 - Deployed via [Cloudflare Pages](https://developers.cloudflare.com/pages)
@@ -61,3 +62,23 @@ bun run remote:migrate
 ## Known issues
 
 R2 uploading does work locally
+
+### Knowledge base
+
+`server.ts`
+
+> When you use anything besides the default remix server, you need to create this file. In our case it does server magic to change your remix app into a single cloudflare worker.
+
+> Your Remix Project will generate a functions/[[path]].js file the first time you run remix dev or remix build. The [[path]] filename indicates that this file will handle requests to all incoming URLs. Refer to Path segments to learn more. Source: [**Cloudflare Pages Remix Tutorial**](https://developers.cloudflare.com/pages/framework-guides/deploy-a-remix-site/)
+
+`bun.lockb`
+
+> Bun's version of package-lock.json
+
+`remix.env.d.ts`
+
+> Defining both Remix and Cloudflare workers types as global here
+
+`wrangler.toml`
+
+> Cloudflare worker config
