@@ -6,7 +6,7 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix dev --manual -c \"npm run start\"",
-    "start": "wrangler pages dev --compatibility-date=2023-10-16 ./public --r2=R2 --d1=DB ",
+    "start": "wrangler pages dev --compatibility-date=2023-10-16 ./public --r2=r2_mmflder_bucket --d1=DB ",
     "local:migrate": "wrangler d1 migrations apply \"mmfldr-db\" --local",
     "remote:migrate": "wrangler d1 migrations apply \"mmfldr-db\"",
     "typecheck": "tsc",
