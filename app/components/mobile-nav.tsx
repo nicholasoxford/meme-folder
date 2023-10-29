@@ -3,15 +3,22 @@
 import * as React from "react";
 
 import { ViewVerticalIcon } from "@radix-ui/react-icons";
-import { Link, LinkProps, useNavigate } from "@remix-run/react";
+import { Link, type LinkProps, useNavigate } from "@remix-run/react";
 import { siteConfig } from "~/config/site";
 import { cn } from "~/lib/utils";
 import { Button } from "./ui/button";
 import { Icons } from "./ui/icons";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { ScrollArea } from "./ui/scroll-area";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export function MobileNav() {
+export function MobileNav({
+  isAuthorized,
+  supabase,
+}: {
+  isAuthorized: boolean;
+  supabase: SupabaseClient<any, "public", any>;
+}) {
   const [open, setOpen] = React.useState(false);
 
   const menuConfig = [
@@ -58,6 +65,14 @@ export function MobileNav() {
                     {item.title}
                   </MobileLink>
                 )
+            )}
+            {isAuthorized && (
+              <Button
+                className="w-24 "
+                onClick={async (_) => await supabase.auth.signOut()}
+              >
+                Logout
+              </Button>
             )}
           </div>
         </ScrollArea>

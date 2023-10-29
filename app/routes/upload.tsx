@@ -82,19 +82,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
   // create a public url from key
   const PUBLIC_URL = env.R2_PUBLIC_URL + NEW_FILENAME;
 
-  //CREATE TABLE IF NOT EXISTS memes (
-  //     id INTEGER PRIMARY KEY AUTOINCREMENT,
-  //     name TEXT NOT NULL,
-  //     url TEXT NOT NULL,
-  //     width INTEGER NOT NULL,
-  //     height INTEGER NOT NULL,
-  //     user_id INTEGER NOT NULL
-  //     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  //    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-  // is_active BOOLEAN NOT NULL DEFAULT TRUE
-  // description TEXT
-  // );
-
   await env.DB.prepare(
     `INSERT INTO memes (name, url, user_id) VALUES (?, ?,  ?)`
   )
