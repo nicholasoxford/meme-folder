@@ -4,7 +4,7 @@
 
 ## Tech Stack
 
-- [`Bun`](https://bun.sh/docs)
+- [Bun](https://bun.sh/docs)
 - [Remix](https://remix.run/docs)
 - CDN: [Cloudflare R2](https://developers.cloudflare.com/r2/)
 - UI: [Shadcn and Tailwind](https://shadcn.com/)
