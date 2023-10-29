@@ -15,6 +15,7 @@ export function SiteHeader({
   isAuthorized: boolean;
   supabase: SupabaseClient<any, "public", any>;
 }) {
+  console.log("isAuthorized", isAuthorized);
   return (
     <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
       <div className="container flex h-14 items-center">
@@ -52,7 +53,7 @@ export function SiteHeader({
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
-            {!isAuthorized ?? (
+            {isAuthorized && (
               <Button
                 className="w-24 hidden md:block"
                 onClick={async (_) => await supabase.auth.signOut()}
