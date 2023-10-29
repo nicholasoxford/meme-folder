@@ -52,7 +52,7 @@ export function SiteHeader({
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
-            {isAuthorized ?? (
+            {!isAuthorized ?? (
               <Button
                 className="w-24 hidden md:block"
                 onClick={async (_) => await supabase.auth.signOut()}
