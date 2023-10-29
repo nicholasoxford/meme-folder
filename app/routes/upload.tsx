@@ -5,7 +5,6 @@ import {
   unstable_parseMultipartFormData,
 } from "@remix-run/cloudflare";
 import { createServerClient } from "@supabase/auth-helpers-remix";
-import type { Database } from "types/supabase";
 import {
   uniqueNamesGenerator,
   adjectives,
@@ -19,7 +18,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const env = context.env as Env;
 
   const response = new Response();
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient(
     env.SUPABASE_URL!,
     env.SUPABASE_ANON_KEY!,
     { request, response }

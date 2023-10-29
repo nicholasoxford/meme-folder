@@ -20,7 +20,6 @@ import {
 } from "@supabase/auth-helpers-remix";
 import { useEffect, useState } from "react";
 import styles from "./tailwind.css";
-import type { Database } from "types/supabase";
 import { SiteHeader } from "./components/site-header";
 
 export const links: LinksFunction = () => [
@@ -85,7 +84,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   let env = context.env as Env;
 
   const response = new Response();
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient(
     env.SUPABASE_URL!,
     env.SUPABASE_ANON_KEY!,
     {

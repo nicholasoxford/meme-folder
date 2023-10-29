@@ -7,7 +7,6 @@ import {
 import { useLoaderData } from "@remix-run/react";
 import { createServerClient } from "@supabase/auth-helpers-remix";
 import type { Meme } from "database/types";
-import type { Database } from "types/supabase";
 import ImageGrid from "~/components/image-grid";
 import Login from "~/components/login";
 import Upload from "~/components/upload-file";
@@ -26,7 +25,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   let env = context.env as Env;
   const db = env.DB;
   const response = new Response();
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient(
     env.SUPABASE_URL!,
     env.SUPABASE_ANON_KEY!,
     {
@@ -93,7 +92,7 @@ export default function Index() {
 export async function action({ request, context }: ActionFunctionArgs) {
   const response = new Response();
   let env = context.env as Env;
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient(
     env.SUPABASE_URL!,
     env.SUPABASE_ANON_KEY!,
     { request, response }

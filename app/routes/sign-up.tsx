@@ -1,6 +1,5 @@
 import { json, type ActionFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { createServerClient } from "@supabase/auth-helpers-remix";
-import type { Database } from "types/supabase";
 import Login from "~/components/login";
 
 export default function SignUp() {
@@ -23,7 +22,7 @@ export default function SignUp() {
 export async function action({ request, context }: ActionFunctionArgs) {
   const response = new Response();
   let env = context.env as Env;
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient(
     env.SUPABASE_URL!,
     env.SUPABASE_ANON_KEY!,
     { request, response }
