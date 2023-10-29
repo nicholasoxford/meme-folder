@@ -6,7 +6,7 @@ import {
 } from "@remix-run/cloudflare";
 import { createServerClient } from "@supabase/auth-helpers-remix";
 import { createClient } from "@supabase/supabase-js";
-import { Database } from "types/supabase";
+import type { Database } from "types/supabase";
 import {
   uniqueNamesGenerator,
   adjectives,

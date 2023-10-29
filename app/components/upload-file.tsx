@@ -3,7 +3,7 @@
  * @see https://v0.dev/t/0pQC0AZkkMz
  */
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useFetcher } from "@remix-run/react";
@@ -15,10 +15,14 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer>("");
   const fetcher = useFetcher();
   const data = fetcher.data;
-  if (data && inputRef.current && hiddenInputRef.current) {
-    inputRef.current.value = "";
-    hiddenInputRef.current.value = "";
-  }
+  useEffect(() => {
+    if (data && inputRef.current && hiddenInputRef.current) {
+      inputRef.current.value = "";
+      hiddenInputRef.current.value = "";
+      setImageSrc(""); // Set imageSrc to an empty string
+    }
+  }, [data]);
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
