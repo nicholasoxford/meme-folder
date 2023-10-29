@@ -1,4 +1,4 @@
-import type { Meme } from "d1/types";
+import type { Meme } from "database/types";
 
 /**
  * v0 by Vercel.

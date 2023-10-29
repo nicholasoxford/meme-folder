@@ -6,7 +6,7 @@ import {
 } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 import { createServerClient } from "@supabase/auth-helpers-remix";
-import type { Meme } from "d1/types";
+import type { Meme } from "database/types";
 import type { Database } from "types/supabase";
 import ImageGrid from "~/components/image-grid";
 import Login from "~/components/login";
