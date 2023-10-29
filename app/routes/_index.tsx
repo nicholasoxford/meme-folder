@@ -6,7 +6,7 @@ import {
 } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 import { createServerClient } from "@supabase/auth-helpers-remix";
-import { createClient } from "@supabase/supabase-js";
+import type { Meme } from "d1/types";
 import type { Database } from "types/supabase";
 import ImageGrid from "~/components/image-grid";
 import Login from "~/components/login";
@@ -24,7 +24,7 @@ export const meta: MetaFunction = () => {
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   let env = context.env as Env;
-
+  const db = env.DB;
   const response = new Response();
   const supabase = createServerClient<Database>(
     env.SUPABASE_URL!,
@@ -50,26 +50,16 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
       }
     );
   }
-  const supaFetch = createClient<Database>(
-    env.SUPABASE_URL,
-    env.SUPABASE_SERVICE_KEY,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    }
-  );
-  const sbRes = await supaFetch
-    .from("assets")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .eq("userId", session.user.id);
 
+  const { results } = await db
+    .prepare("SELECT * FROM memes WHERE user_id = ? ORDER BY created_at DESC")
+    .bind(session.user.id)
+    .all<Meme>();
+  console.log("LOOK HERE ==>", results[0]);
   return json(
     {
       session,
-      assets: sbRes.data,
+      assets: results,
     },
     {
       headers: response.headers,
