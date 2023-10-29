@@ -73,7 +73,7 @@ export default function App() {
           </>
         )}
 
-        <SiteHeader supabase={supabase} />
+        <SiteHeader supabase={supabase} isAuthorized={!!serverAccessToken} />
         <Outlet context={{ supabase }} />
         <ScrollRestoration />
         <Scripts />

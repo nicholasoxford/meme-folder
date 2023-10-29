@@ -9,8 +9,10 @@ import { MobileNav } from "./mobile-nav";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export function SiteHeader({
+  isAuthorized,
   supabase,
 }: {
+  isAuthorized: boolean;
   supabase: SupabaseClient<any, "public", any>;
 }) {
   return (
@@ -50,12 +52,14 @@ export function SiteHeader({
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
-            <Button
-              className="w-24 hidden md:block"
-              onClick={async (_) => await supabase.auth.signOut()}
-            >
-              Logout
-            </Button>
+            {isAuthorized ?? (
+              <Button
+                className="w-24 hidden md:block"
+                onClick={async (_) => await supabase.auth.signOut()}
+              >
+                Logout
+              </Button>
+            )}
           </nav>
         </div>
       </div>
