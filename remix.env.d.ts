@@ -23,5 +23,4 @@ interface Env {
   r2_mmflder_bucket: R2Bucket;
   DB: D1Database;
   R2_PUBLIC_URL: string;
-  SUPABASE_SERVICE_KEY: string;
 }
