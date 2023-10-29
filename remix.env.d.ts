@@ -20,7 +20,8 @@ interface Env {
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;
   NODE_ENV: string;
-  r2_mmflder_bucket: R2Bucket;
+  R2: R2Bucket;
+  DB: D1Database;
   R2_PUBLIC_URL: string;
   SUPABASE_SERVICE_KEY: string;
 }
