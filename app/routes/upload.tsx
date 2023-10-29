@@ -99,5 +99,24 @@ export async function action({ request, context }: ActionFunctionArgs) {
     PUBLIC_URL,
   });
 
+  //CREATE TABLE IF NOT EXISTS memes (
+  //     id INTEGER PRIMARY KEY AUTOINCREMENT,
+  //     name TEXT NOT NULL,
+  //     url TEXT NOT NULL,
+  //     width INTEGER NOT NULL,
+  //     height INTEGER NOT NULL,
+  //     user_id INTEGER NOT NULL
+  //     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  //    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  // is_active BOOLEAN NOT NULL DEFAULT TRUE
+  // description TEXT
+  // );
+
+  const d1Res = await env.DB.prepare(
+    `INSERT INTO memes (name, url, width, height, user_id) VALUES (?, ?, ?, ?, ?)`
+  )
+    .bind(NEW_FILENAME, PUBLIC_URL, 0, 0, user.id)
+    .run();
+  console.log({ d1Res: d1Res.success });
   return new Response(`Put something: ${PUBLIC_URL}`);
 }
