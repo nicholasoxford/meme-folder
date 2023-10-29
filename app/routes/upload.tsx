@@ -96,11 +96,10 @@ export async function action({ request, context }: ActionFunctionArgs) {
   // description TEXT
   // );
 
-  const d1Res = await env.DB.prepare(
+  await env.DB.prepare(
     `INSERT INTO memes (name, url, user_id) VALUES (?, ?,  ?)`
   )
     .bind(NEW_FILENAME, PUBLIC_URL, user.id)
     .run();
-  console.log({ d1Res: d1Res.success });
   return new Response(`Put something: ${PUBLIC_URL}`);
 }

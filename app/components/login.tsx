@@ -9,7 +9,7 @@ import {
 } from "./ui/card";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { action } from "~/routes/_index";
+import type { action } from "~/routes/_index";
 
 export default function Login({ isSignUp }: { isSignUp?: boolean }) {
   const data = useActionData<typeof action>();

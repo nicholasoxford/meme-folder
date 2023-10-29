@@ -55,7 +55,6 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
     .prepare("SELECT * FROM memes WHERE user_id = ? ORDER BY created_at DESC")
     .bind(session.user.id)
     .all<Meme>();
-  console.log("LOOK HERE ==>", results[0]);
   return json(
     {
       session,
@@ -123,12 +122,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
     password,
   });
   if (error) {
-    console.log({
-      error_message: error.message,
-      error_name: error.name,
-      error_status: error.status,
-    });
-
     return json(
       {
         error: error.message,

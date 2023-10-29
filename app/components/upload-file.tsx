@@ -47,10 +47,7 @@ export default function Upload({ hasUploaded }: { hasUploaded?: boolean }) {
         setImageSrc(e.target?.result ?? "");
       };
       reader.readAsDataURL(file);
-      console.log({
-        input: inputRef.current,
-        hidden: hiddenInputRef.current,
-      });
+
       // @ts-ignore
       inputRef.current.files = e.target.files;
     }

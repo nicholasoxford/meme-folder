@@ -52,8 +52,6 @@ export default function App() {
       subscription.unsubscribe();
     };
   }, [serverAccessToken, supabase, revalidate]);
-  const NODE_ENV = process.env.NODE_ENV ?? "";
-  console.log({ NODE_ENV });
   return (
     <html lang="en">
       <head>
