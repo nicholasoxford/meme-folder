@@ -3,7 +3,7 @@ import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const env = context.env as Env;
 
-  const bucket = env.R2;
+  const bucket = env.r2_mmflder_bucket;
 
   const items = await bucket.list();
 
